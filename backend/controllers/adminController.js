@@ -89,15 +89,10 @@ const loginAdmin = (req, res) => {
       password === process.env.ADMIN_PASSWORD
     ) {
       // Create a JWT token with email as the payload
-      const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      const atoken = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
-      res.cookie("jwt_admin", token, {
-        maxAge: 60 * 60 * 1000,
-        httpOnly: true, //prevent XSS attacks
-        sameSite: "strict",
-      });
-      res.json({ success: true, token });
+      res.json({ success: true, atoken });
     } else {
       res.json({ success: false, message: "Invalid credentials" });
     }

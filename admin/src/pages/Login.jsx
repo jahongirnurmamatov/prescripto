@@ -3,21 +3,23 @@ import { assets } from "../assets/assets";
 import { AdminContext } from "../context/AdminContext";
 import axios from 'axios';
 import { toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom';
 const Login = () => {
   const [state, setState] = useState("Admin");
   const { setAToken, backendUrl } = useContext(AdminContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const onSubmitHandler = async(e)=>{
     e.preventDefault();
     try {
         if(state === 'Admin'){
           const {data}=await axios.post(backendUrl+'/api/admin/login',{email,password});
-          console.log(data)
           if(data.success){
-            localStorage.setItem('aToken',data.token);
-            setAToken(data.token);
+            navigate('/');
+            localStorage.setItem('aToken',data.atoken);
+            setAToken(data.token);         
           }else{
             toast.error(data.message)
           }

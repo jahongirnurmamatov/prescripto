@@ -2,12 +2,12 @@ import jwt from 'jsonwebtoken';
 
 const authAdmin = async (req, res, next) => {
     try {
-        const token = req.cookies.jwt_admin;
-        if (!token) {
+        const {atoken}=req.headers;
+        if (!atoken) {
             return res.json({ success: false, message: 'No token provided' });
         }
         // Verify the token
-        const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
+        const tokenDecoded = jwt.verify(atoken, process.env.JWT_SECRET);
         
         // Check if the token contains correct admin email
         if (tokenDecoded.email !== process.env.ADMIN_EMAIL) {
