@@ -90,7 +90,7 @@ const loginAdmin = (req, res) => {
     ) {
       // Create a JWT token with email as the payload
       const atoken = jwt.sign({ email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "24h",
       });
       res.json({ success: true, atoken });
     } else {
