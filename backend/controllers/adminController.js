@@ -102,4 +102,15 @@ const loginAdmin = (req, res) => {
   }
 };
 
-export { addDoctor, loginAdmin };
+
+// api to get all doctors list for amdin panel
+const allDoctors = async(req,res)=>{
+  try {
+    const doctors = await doctorModel.find({}).select('-password');
+    res.json({success:true, doctors});
+  } catch (error) {
+    console.log(error.message);
+    res.status(403).json({success:false,message:error.message});
+  }
+}
+export { addDoctor, loginAdmin,allDoctors };
