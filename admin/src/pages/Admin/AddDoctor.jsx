@@ -39,7 +39,9 @@ const AddDoctor = () => {
         JSON.stringify({ line1: address1, line2: address2 })
       );
       formData.append("fees", Number(fees));
-
+      for (const value of formData.values()) {
+        console.log(value);
+      }
       const { data } = await axios.post(
         backendUrl + "/api/admin/add-doctor",
         formData,
@@ -63,7 +65,6 @@ const AddDoctor = () => {
       toast.error(error.message);
     }
   };
-  console.log(experience);
 
   return (
     <form onSubmit={onSubmitHandler} className="m-5 w-full">
@@ -128,8 +129,9 @@ const AddDoctor = () => {
                 onChange={(e) => setExperience(e.target.value)}
                 value={experience}
                 className="border rounded px-3 py-2"
-                defaultValue="1 Year"
+                
               >
+                <option value="" disabled>Select experience</option>
                 <option defaultValue="1 Year" value="1 Year">
                   1 Year
                 </option>
@@ -162,9 +164,11 @@ const AddDoctor = () => {
               <select
                 onChange={(e) => setSpeciality(e.target.value)}
                 value={speciality}
+                
                 className="border rounded px-3 py-2"
               >
-                <option selected value="General physician">
+                <option value="" disabled>Select specialty</option> {/* Default empty option */}
+                <option  value="General physician">
                   General physician
                 </option>
                 <option value="Gynecologist">Gynecologist</option>
