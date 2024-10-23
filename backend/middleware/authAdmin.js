@@ -13,7 +13,6 @@ const authAdmin = async (req, res, next) => {
         if (tokenDecoded.email !== process.env.ADMIN_EMAIL) {
             return res.json({ success: false, message: 'Invalid token' });
         }
-
         // Move to the next middleware
         next();
     } catch (error) {
