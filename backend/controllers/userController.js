@@ -83,7 +83,7 @@ const updateProfile = async (req, res) => {
       return res.json({success:false, message:'Data missing!'});
     }
 
-    await userModel.findByIdAndUpdate(userId,{name,phone,address:JSON.parse(address,dob, gender)});
+    await userModel.findByIdAndUpdate(userId,{name,phone,address:JSON.parse(address),dob, gender});
     if(imageFile){
       // upload image to cloudinary 
       const imageUpload = await cloudinary.uploader.upload(imageFile.path,{resource_type:'image'});
