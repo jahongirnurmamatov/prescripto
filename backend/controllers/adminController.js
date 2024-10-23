@@ -83,8 +83,7 @@ const addDoctor = async (req, res) => {
 const loginAdmin = (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Check if credentials match
+    
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
