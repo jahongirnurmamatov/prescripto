@@ -5,6 +5,9 @@ import {
   getProfile,
   listAppointment,
   loginUser,
+
+  payAppointment,
+
   registerUser,
   updateProfile,
 } from "../controllers/userController.js";
@@ -25,5 +28,6 @@ userRouter.post(
 userRouter.post("/book", authUser, bookAppointment);
 userRouter.get("/appointments", authUser, listAppointment);
 userRouter.post("/cancel-appointment", authUser, cancelAppointment);
+userRouter.post("/pay-appointment", authUser, payAppointment);
 
 export default userRouter;

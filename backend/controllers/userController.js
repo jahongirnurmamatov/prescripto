@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import razorpay  from 'razorpay';
+
 // api to register user
 const registerUser = async (req, res) => {
   try {
@@ -196,6 +198,26 @@ const cancelAppointment = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
+
+
+
+// api to make payment of appointment using razorpay
+const payAppointment = async(req,res)=>{
+  try {
+    const {appointmentId} =req.body;
+    const appointmentData = await appointmentModel.findById(appointmentId);
+
+    if(!appointmentData || appointmentData.cancelled){
+      return res.json({ success: false, message: "Invalid appointment" });
+    }
+    await appointmentModel.findByIdAndUpdate(appointmentId,{payment:true});
+    res.json({ success: true, message: "Payment successful" });
+
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+}
 export {
   registerUser,
   loginUser,
@@ -204,4 +226,5 @@ export {
   bookAppointment,
   listAppointment,
   cancelAppointment,
+  payAppointment
 };
