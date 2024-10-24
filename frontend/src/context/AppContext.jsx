@@ -61,6 +61,7 @@ const AppContextProvider = (props) => {
     setToken,
     backendUrl,
     userData,
+    setUserData,
     getUserData,
   };
   return (
