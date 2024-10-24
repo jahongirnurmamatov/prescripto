@@ -23,8 +23,6 @@ const Appointment = () => {
     setDocInfo(docInfo);
   };
 
-  console.log(slotIndex, slotTime);
-
   const getAvailableSlots = async () => {
     setDocSlots([]);
     //getting current date
