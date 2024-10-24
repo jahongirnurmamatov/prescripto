@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import jwt from "jsonwebtoken";
+import appointmentModel from "../models/appointmentModel.js";
 
 // API for adding doctor
 const addDoctor = async (req, res) => {
@@ -83,7 +84,7 @@ const addDoctor = async (req, res) => {
 const loginAdmin = (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
@@ -102,15 +103,25 @@ const loginAdmin = (req, res) => {
   }
 };
 
-
 // api to get all doctors list for amdin panel
-const allDoctors = async(req,res)=>{
+const allDoctors = async (req, res) => {
   try {
-    const doctors = await doctorModel.find({}).select('-password');
-    res.json({success:true, doctors});
+    const doctors = await doctorModel.find({}).select("-password");
+    res.json({ success: true, doctors });
   } catch (error) {
     console.log(error.message);
-    res.status(403).json({success:false,message:error.message});
+    res.status(403).json({ success: false, message: error.message });
   }
-}
-export { addDoctor, loginAdmin,allDoctors };
+};
+
+// api to get all appointments list
+const appointmentsAdmin = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({});
+    res.json({ success: true, appointments });
+  } catch (error) {
+    console.log(error.message);
+    res.status(403).json({ success: false, message: error.message });
+  }
+};
+export { addDoctor, loginAdmin, allDoctors , appointmentsAdmin };
