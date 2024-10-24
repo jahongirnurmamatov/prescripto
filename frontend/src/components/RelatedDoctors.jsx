@@ -6,7 +6,6 @@ const RelatedDoctors = ({docId,speciality}) => {
     const {doctors} = useContext(AppContext);
     const [relDoc,setRelDoc]=useState([]);
     const navigate = useNavigate();
-    console.log(doctors, speciality)
 
     useEffect(()=>{
         if(doctors.length>0 && speciality){

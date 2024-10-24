@@ -63,6 +63,7 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     getUserData,
+    getDoctorsData,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
