@@ -88,7 +88,9 @@ const cancelAppointment = async (req, res) => {
     const { docId, appointmentId } = req.body;
     const appointmentData = await appointmentModel.findById(appointmentId);
     if (appointmentData && appointmentData.docId === docId) {
-      await appointmentModel.findByIdAndUpdate(appointmentId,{cancelled:true});
+      await appointmentModel.findByIdAndUpdate(appointmentId, {
+        cancelled: true,
+      });
       res.json({ success: true, message: "Appointment canceled" });
     } else {
       res.json({ success: false, message: "Failed to  cancel" });
@@ -99,4 +101,68 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor,appointmentComplete,cancelAppointment };
+// api to get dashboard data for doctor panel
+const doctorDashboard = async (req, res) => {
+  try {
+    const { docId } = req.body;
+    const appointments = await appointmentModel.find({ docId });
+    let earnings = 0;
+    appointments.map(item=>{
+      if(item.isCompleted || item.payment){
+        earnings+=item.amount
+      }
+    });
+    let patients = [];
+    appointments.map((item) => {
+      if (!patients.includes(item.userId)) {
+        patients.push(item.userId);
+      }
+    });
+    const dashboardData = {
+      appointments: appointments.length,
+      earnings,
+      patients: patients.length,
+      latestAppointments: appointments.reverse().slice(0, 5),
+    };
+    res.json({ success: true, dashboardData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+// api to get doctor profile for doctor panel 
+const doctorProfile = async(req,res)=>{
+  try {
+    const {docId} = req.body;
+    const docData = await doctorModel.findById(docId).select(["-password"]);
+    res.json({ success: true, docData });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+// api to edit doctor profile for doctor panel 
+const updateProfile = async(req,res)=>{
+  try {
+    const {docId, address,available,fees} = req.body;
+    await doctorModel.findByIdAndUpdate(docId,{fees,address,available});
+    res.json({ success: true, message: "Profile updated" });
+
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+}
+
+export {
+  changeAvailability,
+  doctorList,
+  doctorDashboard,
+  loginDoctor,
+  appointmentsDoctor,
+  appointmentComplete,
+  cancelAppointment,
+  doctorProfile,
+  updateProfile
+};
