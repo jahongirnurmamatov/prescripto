@@ -88,7 +88,7 @@ const cancelAppointment = async (req, res) => {
     const { docId, appointmentId } = req.body;
     const appointmentData = await appointmentModel.findById(appointmentId);
     if (appointmentData && appointmentData.docId === docId) {
-      await appointmentModel.findByIdAndDelete(appointmentId,{cancelled:true});
+      await appointmentModel.findByIdAndUpdate(appointmentId,{cancelled:true});
       res.json({ success: true, message: "Appointment canceled" });
     } else {
       res.json({ success: false, message: "Failed to  cancel" });
