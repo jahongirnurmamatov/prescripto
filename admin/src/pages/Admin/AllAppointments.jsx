@@ -6,8 +6,9 @@ import { AppContext } from "../../context/AppContex";
 import { assets } from "../../assets/assets";
 
 const AllAppointments = () => {
-  const { aToken, getAllAppointments, appointments } = useContext(AdminContext);
-  const { calculateAge, slotDateFormat,currency } = useContext(AppContext);
+  const { aToken, getAllAppointments, appointments, cancelAppointment } =
+    useContext(AdminContext);
+  const { calculateAge, slotDateFormat, currency } = useContext(AppContext);
 
   useEffect(() => {
     if (aToken) {
@@ -62,8 +63,20 @@ const AllAppointments = () => {
               />
               <p>{appointment.docData.name}</p>
             </div>
-            <p>{currency} {appointment.amount}</p>
-            <img className="w-10 cursor-pointer hover:scale-110" src={assets.cancel_icon} alt="" />
+            <p>
+              {currency} {appointment.amount}
+            </p>
+            {appointment.cancelled ? (
+              <p className="text-red text-xs font-medium border border-red-500 px-2 py-1 text-center rounded-full">
+                Cancelled
+              </p>
+            ) : (
+              <img onClick={()=>cancelAppointment(appointment._id)}
+                className="w-10 cursor-pointer hover:scale-110"
+                src={assets.cancel_icon}
+                alt=""
+              />
+            )}
           </div>
         ))}
       </div>
