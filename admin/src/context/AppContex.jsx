@@ -32,11 +32,11 @@ const AppContextProvider = (props) => {
       dateArray[0] + " " + months[parseInt(dateArray[1])] + " " + dateArray[2]
     );
   };
-  
+
   const value = {
     calculateAge,
     slotDateFormat,
-    currency
+    currency,
   };
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
