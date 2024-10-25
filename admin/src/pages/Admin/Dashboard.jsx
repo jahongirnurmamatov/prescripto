@@ -9,7 +9,7 @@ const Dashboard = () => {
   const { getDashData, aToken, cancelAppointment, dashData } =
     useContext(AdminContext);
 
-  const {slotDateFormat}=useContext(AppContext);
+  const { slotDateFormat } = useContext(AppContext);
 
   useEffect(() => {
     if (aToken) {
@@ -56,14 +56,39 @@ const Dashboard = () => {
           </div>
           <div className="pt-4 border border-t-0">
             {dashData?.latestAppointments?.map((appointment, index) => (
-              <div className="flex items-center px-6 gap-3 py-3 hover:bg-gray-100" key={index}>
-                <img className="rounded-full w-10" src={appointment.docData.image} alt="" />
+              <div
+                className="flex items-center px-6 gap-3 py-3 hover:bg-gray-100"
+                key={index}
+              >
+                <img
+                  className="rounded-full w-10"
+                  src={appointment.docData.image}
+                  alt=""
+                />
                 <div className="flex-1">
-                  <p className="text-gray-800 font-medium">{appointment.docData.name}</p>
-                  <p className="text-gray-600">{slotDateFormat(appointment.slotDate)}</p>
+                  <p className="text-gray-800 font-medium">
+                    {appointment.docData.name}
+                  </p>
+                  <p className="text-gray-600">
+                    {slotDateFormat(appointment.slotDate)}
+                  </p>
                 </div>
-                {appointment.cancelled ? <p className="text-red-400">Cancelled</p>
-                : <img src={assets.cancel_icon } onClick={()=>{cancelAppointment(appointment._id); getDashData()}} className="w-10 cursor-pointer" alt="" />  }
+                {appointment.cancelled ? (
+                  <p className="text-red text-xs font-medium border border-red-500 px-2 py-1 text-center rounded-full">
+                    Cancelled
+                  </p>
+                ) : appointment.isCompleted ? (
+                  <p className="text-green-500 text-xs font-medium border border-green-500 px-2 py-1 text-center rounded-full">
+                    Completed
+                  </p>
+                ) : (
+                  <img
+                    onClick={() => cancelAppointment(appointment._id)}
+                    className="w-10 cursor-pointer hover:scale-110"
+                    src={assets.cancel_icon}
+                    alt=""
+                  />
+                )}
               </div>
             ))}
           </div>

@@ -15,7 +15,6 @@ const MyAppointments = () => {
       });
       if (data.success) {
         setAppointments(data.appointments.reverse());
-        
       } else {
         toast.error(data.message);
       }
@@ -44,9 +43,9 @@ const MyAppointments = () => {
     }
   };
 
-  const payAppointment =async (appointmentId) => {
+  const payAppointment = async (appointmentId) => {
     try {
-      const { data } =await axios.post(
+      const { data } = await axios.post(
         backendUrl + "/api/user/pay-appointment",
         { appointmentId },
         { headers: { token } }
@@ -54,7 +53,7 @@ const MyAppointments = () => {
       if (data?.success) {
         toast.success(data?.message);
         getUserAppointment();
-      }else{
+      } else {
         toast.error(data?.message);
       }
     } catch (error) {
@@ -102,7 +101,7 @@ const MyAppointments = () => {
             </div>
             <div className=""></div>
             <div className="flex flex-col gap-2 justify-end">
-              {!item.cancelled && !item.payment && (
+              {!item.cancelled && !item.payment && !item.isCompleted && (
                 <button
                   onClick={() => {
                     payAppointment(item._id);
@@ -113,7 +112,7 @@ const MyAppointments = () => {
                 </button>
               )}
 
-              {!item.cancelled && !item.payment &&(
+              {!item.cancelled && !item.payment && !item.isCompleted && (
                 <button
                   onClick={() => cancelAppointment(item._id)}
                   className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
@@ -121,12 +120,21 @@ const MyAppointments = () => {
                   Cancel appointment
                 </button>
               )}
-              {item.cancelled && (
+              {item.cancelled && !item.isCompleted && (
                 <button className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500">
                   Appointment cancelled
                 </button>
               )}
-              {!item.cancelled && item.payment && (<button className="sm:min-w-48 py-2  bg-green-600 rounded text-white">Paid</button>)}
+              {!item.cancelled && item.payment && !item.isCompleted && (
+                <button className="sm:min-w-48 py-2  bg-green-600 rounded text-white">
+                  Paid
+                </button>
+              )}
+              {item.isCompleted && (
+                <button className="sm:min-w-48 py-2 border border-green-500 text-green-500 rounded">
+                  Completed
+                </button>
+              )}
             </div>
           </div>
         ))}
